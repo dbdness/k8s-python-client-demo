@@ -20,8 +20,13 @@ deployment_name = "demo"
 replicas = 1
 pod_labels = {"app": "sentence-reverser"}
 container_name = "sentence-reverser"
-#container_image = "registry.hub.docker.com/kimsen1992/sentence-reverser"
-container_image = "nginx:latest"
+container_image = "registry.hub.docker.com/kimsen1992/sentence-reverser"
+#container_image = "nginx:latest"
+container_env_vars = [
+    client.V1EnvVar(name="SENTENCE", value="Demo"),
+    client.V1EnvVar(name="WEBHOOKURL",
+                    value="https://webhook.site/e8d2c3a4-240c-44db-99df-82a7f5273117")
+]
 container_port = 80
 
 
@@ -36,18 +41,20 @@ deployment.kind = "Deployment"
 deployment.metadata = client.V1ObjectMeta(name=deployment_name)
 
 # Defining Deployment spec with Pods
-spec = client.ExtensionsV1beta1DeploymentSpec(template=client.V1PodTemplateSpec())
+spec = client.ExtensionsV1beta1DeploymentSpec(
+    template=client.V1PodTemplateSpec())
 spec.replicas = replicas
-spec.template = client.V1PodTemplateSpec()
 spec.template.metadata = client.V1ObjectMeta(labels=pod_labels)
 deployment.spec = spec
 
 # Defining Pod container specs
 container = client.V1Container(name=container_name)
-container.image=container_image
+container.image = container_image
+container.env = container_env_vars
 container.ports = [client.V1ContainerPort(container_port=container_port)]
 
-spec.template.spec = client.V1PodSpec(containers=[container])
+# restart_policy options: "Always", "OnFailure", "Never"
+spec.template.spec = client.V1PodSpec(containers=[container], restart_policy="OnFailure")
 
 # Creating Deployment
 print("Creating Deployment '{0}'".format(deployment_name))
