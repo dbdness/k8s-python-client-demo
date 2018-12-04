@@ -42,6 +42,8 @@ job.metadata = client.V1ObjectMeta(name=job_name)
 
 # Defining Job spec with Pods
 spec = client.V1JobSpec(template=client.V1PodTemplateSpec())
+# Deleting the Job 10s after it has finished
+spec.ttl_seconds_after_finished = 10
 spec.template.metadata = client.V1ObjectMeta(labels=pod_labels)
 job.spec = spec
 
