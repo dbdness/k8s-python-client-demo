@@ -70,7 +70,7 @@ def create_job(api_instance):
 
     # Defining Job spec with Pods
     spec = client.V1JobSpec(template=client.V1PodTemplateSpec())
-    # Deleting the Job 10s after it has finished if supported by the server.
+    # Deleting the Job 10s after it has finished *if* supported by the server.
     spec.ttl_seconds_after_finished = 10
     spec.template.metadata = client.V1ObjectMeta(labels=pod_labels)
     job.spec = spec
