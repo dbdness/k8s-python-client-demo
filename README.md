@@ -1,2 +1,4 @@
-# k8s-client-demo
-Demo Python application for launching an on-demand Kubernetes Deployment including Pod(s).
+# k8s-python-client-demo
+Demo project written in Python for creating on-demand Kubernetes Jobs and Pods. 
+
+Made for 2018/19 PBA Bachelor project. 
