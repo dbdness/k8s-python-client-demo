@@ -1,6 +1,9 @@
 """On-demand Kubernetes Job creation
 
-This script creates a Job within the default Kubernetes cluster context.
+This script handles Job resources within the default Kubernetes cluster context.
+The following Job actions are supported:
+* Create Job with single Pod
+* Delete Job
 
 This script also requires that `kubernetes` is installed within the Python
 environment you are running this script in.
