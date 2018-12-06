@@ -56,12 +56,16 @@ def main():
         create_job(api_instance)
     elif arg == "--delete":
         delete_job(api_instance)
+    elif arg == "--status":
+        get_job_status(api_instance)
     else:
         print("Usage:\n"
               "--create\n"
               "    create K8s Job based on script variables.\n"
               "--delete\n"
-              "    delete K8s Job based on script job_name variable.")
+              "    delete K8s Job based on script job_name variable, if Job exists.\n"
+              "--status\n"
+              "    get status on K8s Job based on script job_name variable, if Job exists.")
 
 
 def create_job(api_instance):
@@ -102,6 +106,15 @@ def delete_job(api_instance):
         print("Deleting Job '{0}'".format(job_name))
         api_instance.delete_namespaced_job(namespace="default", name=job_name, body=body)
         print("Success!")
+    except ApiException as e:
+        print("Exception thrown when deleting Job: {0}".format(e))
+
+
+def get_job_status(api_instance):
+    try:
+        print("Getting status for Job '{0}'".format(job_name))
+        job = api_instance.read_namespaced_job(namespace="default", name=job_name)
+        print(job.status)
     except ApiException as e:
         print("Exception thrown when deleting Job: {0}".format(e))
 
