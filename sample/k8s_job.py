@@ -4,6 +4,7 @@ This script handles Job resources within the default Kubernetes cluster context.
 The following Job actions are supported:
 * Create Job with single Pod
 * Delete Job
+* Get Job status
 
 This script also requires that `kubernetes` is installed within the Python
 environment you are running this script in.
@@ -19,6 +20,7 @@ Variables:
 Functions:
     create_job() - creates and launches a Kubernetes Job based on the specified variables.
     delete_job() - deletes a Kubernetes Job with the name defined in the job_name variable.
+    get_job_status() - returns the Kubernetes API status of a Job with the name defined in the job_name variable.
 """
 
 import sys
@@ -89,7 +91,9 @@ def create_job(api_instance):
     container.ports = [client.V1ContainerPort(container_port=container_port)]
 
     # restart_policy options: "Always", "OnFailure", "Never"
-    spec.template.spec = client.V1PodSpec(containers=[container], restart_policy="OnFailure")
+    spec.template.spec = client.V1PodSpec(
+        containers=[container],
+        restart_policy="OnFailure")
 
     # Creating Job
     try:
@@ -100,6 +104,7 @@ def create_job(api_instance):
         print("Exception thrown when creating Job: {0}".format(e))
 
 
+# TODO: delete Pods along with Job
 def delete_job(api_instance):
     body = client.V1DeleteOptions()
     try:
