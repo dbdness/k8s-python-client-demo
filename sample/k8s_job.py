@@ -104,9 +104,9 @@ def create_job(api_instance):
         print("Exception thrown when creating Job: {0}".format(e))
 
 
-# TODO: delete Pods along with Job
 def delete_job(api_instance):
-    body = client.V1DeleteOptions()
+    # Configuring K8s propagation policy to garabage collect Pods in the background when a Job is deleted.
+    body = client.V1DeleteOptions(propagation_policy="Background")
     try:
         print("Deleting Job '{0}'".format(job_name))
         api_instance.delete_namespaced_job(namespace="default", name=job_name, body=body)
