@@ -105,7 +105,7 @@ def create_job(api_instance):
 
 
 def delete_job(api_instance):
-    # Configuring K8s propagation policy to garabage collect Pods in the background when a Job is deleted.
+    # Configuring K8s propagation policy to garbage collect Pods in the background when a Job is deleted.
     body = client.V1DeleteOptions(propagation_policy="Background")
     try:
         print("Deleting Job '{0}'".format(job_name))
