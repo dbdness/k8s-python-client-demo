@@ -27,7 +27,6 @@ import sys
 from kubernetes import client, config
 from kubernetes.client.rest import ApiException
 
-
 # Variables to define the K8s Job
 job_name = "demo"
 replicas = 1
@@ -90,9 +89,16 @@ def create_job(api_instance):
     container.env = container_env_vars
     container.ports = [client.V1ContainerPort(container_port=container_port)]
 
+    # Defining optional AFS volume
+    # volume = client.V1Volume(name="afs-volume")
+    # volume.azure_file = client.V1AzureFileVolumeSource(read_only=False,
+    #                                                    secret_name="azure-secret",
+    #                                                    share_name="data")
+
     # restart_policy options: "Always", "OnFailure", "Never"
     spec.template.spec = client.V1PodSpec(
         containers=[container],
+        # volumes=[volume],
         restart_policy="OnFailure")
 
     # Creating Job
